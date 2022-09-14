@@ -1,6 +1,15 @@
+import { useEffect } from 'react';
 import './App.css';
 
 function App() {
+
+  useEffect(() => {
+    console.log('postMessage')
+    const frame = document.getElementById('rewind-iframe');
+    frame.contentWindow.postMessage({message: 'HELLO_WORLD'}, 'https://casino.demo.rewindprotocol.com');
+  
+  }, [])
+
   return (
     <div className="App" >
         <div>IFRAME_START</div>
