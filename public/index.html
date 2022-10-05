@@ -27,15 +27,16 @@
     <title>React App</title>
   </head>
   <script>
-window.addEventListener('message', event => {
-  if (event.origin.startsWith('http://casino.demo.rewindprotocol.com')) { //check the origin of the data!
-    // The data was sent from your site. It sent with postMessage is stored in event.data:
-    console.log(event.data);
-  } else {
-    // The data was NOT sent from your site!
-    return;
-  }
-});
+    console.log('postMessage')
+    window.addEventListener('message', event => {
+      if (event.origin.startsWith('https://casino.demo.rewindprotocol.com')) { //check the origin of the data!
+        // The data was sent from your site. It sent with postMessage is stored in event.data:
+        console.log(event.data);
+      } else {
+        // The data was NOT sent from your site!
+        return;
+      }
+    });
   </script>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -50,18 +51,21 @@ window.addEventListener('message', event => {
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
 
-          <!-- Modal content -->
-          <!-- <div class="modal-content">
-            <span class="close">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle opacity="0.8" cx="11" cy="11" r="11" fill="black"/>
-                <path d="M6 6L16 16" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M16 6L6 16" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </span>
-            <iframe id="rewind-iframe-modal" frameBorder="0" width="100%" src="https://casino.demo.rewindprotocol.com/app/modal/bonus-list?isModal=true" ></iframe>
-          </div>
-           -->
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle opacity="0.8" cx="11" cy="11" r="11" fill="black"/>
+            <path d="M6 6L16 16" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M16 6L6 16" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </span>
+        <iframe id="rewind-iframe-modal" frameBorder="0" width="100%" src="https://casino.demo.rewind.rewindprotocol.com/app/modal/bonus-list?isModal=true" ></iframe>
+      </div>
+      
+    </div>
   </body>
 </html>

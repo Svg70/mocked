@@ -1,27 +1,149 @@
-import { useEffect } from 'react';
-import './App.css';
+import axios from "axios";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useBreakpoint } from "./hooks/useBreakPoints";
 
-function App() {
+const DemoCasino = () => {
+  const iFrameRef = useRef(null);
+  const [isMobileResponsive, setIsMobileResponsive] = useState(false);
+  const [sid, setSid] = useState("");
+  const { breakpoint, windowSize } = useBreakpoint();
+  const isMobile = useMemo(() => breakpoint === "xs", [breakpoint]);
+  const foreignId = "u119006797652";
 
   useEffect(() => {
-    console.log('postMessage')
-    const frame = document.getElementById('rewind-iframe');
-    frame.contentWindow.postMessage({message: 'HELLO_WORLD'}, 'https://casino.demo.rewindprotocol.com');
-  
-  }, [])
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    const openModal = () => {
+      //@ts-ignore
+      modal.style.display = "block";
+    };
+
+    const closeModal = () => {
+      //@ts-ignore
+      modal.style.display = "none";
+    };
+
+    // When the user clicks on <span> (x), close the modal
+    if (span) {
+      //@ts-ignore
+      span.onclick = function () {
+        //@ts-ignore
+        modal.style.display = "none";
+      };
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        //@ts-ignore
+        modal.style.display = "none";
+      }
+    };
+
+    window.addEventListener("message", (e) => {
+      console.log(e, 'POST_MESSAGE')
+      if (e.origin !== 'https://casino.demo.rewindprotocol.com') {
+        return;
+      }
+      if (e.data.command === 'OPEN_MODAL') {
+        openModal();
+      } else if (e.data.command === 'CLOSE_MODAL') {
+        closeModal();
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .post(
+        `${'https://mock-casino.demo.rewindprotocol.com/'}get-iframe-url`,
+        {
+          foreignId,
+        },
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        const stringArr = res.data.split("=");
+        const sid = stringArr[stringArr.length - 1];
+        setSid(sid);
+
+        const desktopModalIframe = document.getElementById(
+          "rewind-iframe-modal"
+        );
+        if (desktopModalIframe) {
+          //@ts-ignore
+          desktopModalIframe.src = `${'https://casino.demo.rewindprotocol.com'}/app/modal/bonus-list?isModal=true&sid=${sid}`;
+        }
+      })
+      .catch((err) => err?.response);
+  }, []);
 
   return (
-    <div className="App" >
-        <div>IFRAME_START</div>
-        <iframe
-          title="Child iframe"
-          id={"rewind-iframe"}
-          frameBorder="0"
-          src={`https://casino.demo.rewindprotocol.com/app/iframe?theme=BLUE_DARK&isMobileResponsive=true&sid=cd050c6c-f1ea-4f65-94c7-ac29e6e82d34&foreignId=u119006797652`}
-        ></iframe>
-        <div>IFRAME_END</div>
-    </div>
+    <>
+      <header></header>
+      <div className="content">
+        <nav></nav>
+        <div className="content__central"></div>
+        <div className={"content__right"}>
+          <div className="content__right__top"></div>
+          <iframe
+            ref={iFrameRef}
+            title="Child iframe"
+            id={
+              isMobile && isMobileResponsive
+                ? "rewind-iframe-mobile"
+                : "rewind-iframe"
+            }
+            frameBorder="0"
+            src={`${'https://casino.demo.rewindprotocol.com'}/app/iframe?theme=${'BLUE_DARK'}&isMobile=${isMobile}&windowSizeWidth=${windowSize.width}&isMobileResponsive=${isMobileResponsive}&sid=${sid}&foreignId=${foreignId}`}
+          ></iframe>
+          <div className="content__right__bottom"></div>
+        </div>
+      </div>
+      <footer>
+        <div id="myModal" className="modal">
+          <div className="modal-content">
+            <span className="close">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 22 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle opacity="0.8" cx="11" cy="11" r="11" fill="black" />
+                <path
+                  d="M6 6L16 16"
+                  stroke="white"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M16 6L6 16"
+                  stroke="white"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+            <iframe
+              id="rewind-iframe-modal"
+              frameBorder="0"
+              width="100%"
+              src="https://casino.demo.rewindprotocol.com/app/modal/bonus-list?isModal=true"
+            ></iframe>
+          </div>
+        </div>
+      </footer>
+    </>
   );
-}
+};
 
-export default App;
+export default DemoCasino;

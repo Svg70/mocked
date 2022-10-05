@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            width: 100%;
+            height: 100px;
+            background-color: gray;
+            background-repeat: no-repeat;
+            background-size: 100% 100px;
+            background-image: url('./images/header.png');
+        }
+        .content {
+            width: 100%;
+            height: 800px;
+            display: flex;
+        }
+        .content__central {
+            width: calc(100% - 500px);
+            background-image: url('./images/central-content.png');
+            background-size: 100%;
+        }
+        .content__right {
+            width: 300px;
+            padding: 15px;
+            background-color: rgb(35 35 75);
+        }
+        .mobile-content {
+            width: 100%;
+            padding: 15px;
+            background-color: rgb(35 35 75);
+        }
+        .content__right__top {
+            height: 240px;
+            width: 100%;
+            background-image: url('./images/right-widget.png');
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+        .content__right__bottom {
+            height: 340px;
+            width: 103%;
+            background-image: url('./images/right-widget-3.png');
+            background-repeat: no-repeat;
+            background-size: 110%;
+            margin-left: -9px;
+        }
+        nav {
+            width: 200px;
+            background-color: rgb(36 36 55);
+            background-repeat: no-repeat;
+            background-size: 100%;
+            background-image: url('./images/navbar-1.png');
+        }
+        #rewind-iframe {
+            /* width: 100%; */
+            width: 265px;
+            height: 361px;
+            /* height: 220px; */
+            margin: 0 0 10px 15px;
+        }
+        footer {
+            width: 100%;
+            height: 300px;
+            background-color: rgb(19 19 37);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+    </header>
+    <div class="content">
+        <nav></nav>
+        <div class="content__central"></div>
+        <div class="content__right">
+            <div class="content__right__top"></div>
+            <iframe id="rewind-iframe" frameBorder="0" src="http://localhost:3000/" ></iframe>
+            <div class="content__right__bottom"></div>
+        </div>
+    </div>
+    <footer>
+
+    </footer>
+</body>
+<script>
+    const userInfo = {
+        foreignId:'u119006797652',
+        operatorId:'b675f14b-08a2-4d8a-9e45-06551cee87cc'
+    }
+
+    window.onload = function () {
+        var iframeWin = document.getElementById("rewind-iframe").contentWindow
+        iframeWin.postMessage({message: 'HELLO_WORLD'}, "http://localhost:3000");
+        return false;
+    };
+</script>
+</html>
