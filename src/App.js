@@ -1,6 +1,8 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useBreakpoint } from "./hooks/useBreakPoints";
+import { useEffectSkipFirst } from "./hooks/useEffectSkipFirst";
 
 const DemoCasino = () => {
   const iFrameRef = useRef(null);
@@ -8,7 +10,21 @@ const DemoCasino = () => {
   const [sid, setSid] = useState("");
   const { breakpoint, windowSize } = useBreakpoint();
   const isMobile = useMemo(() => breakpoint === "xs", [breakpoint]);
-  const foreignId = "u119006797652";
+  const [foreignId, setForeignId] = useState();
+
+  useEffect(() => {
+    const foreignIdCookie = Cookies.get("foreignId");
+
+    console.log(foreignIdCookie, "COOKIE");
+
+    if (!foreignIdCookie) {
+      const mockedForeignId = "mocked-casino-" + Math.random() * 10 ** 8;
+      Cookies.set("foreignId", mockedForeignId);
+      setForeignId(mockedForeignId);
+    } else {
+      setForeignId(foreignIdCookie);
+    }
+  }, []);
 
   useEffect(() => {
     // Get the modal
@@ -44,46 +60,48 @@ const DemoCasino = () => {
     };
 
     window.addEventListener("message", (e) => {
-      console.log(e, 'POST_MESSAGE')
-      if (e.origin !== 'https://casino.demo.rewindprotocol.com') {
+      console.log(e, "POST_MESSAGE");
+      if (e.origin !== "https://casino.demo.rewindprotocol.com") {
         return;
       }
-      if (e.data.command === 'OPEN_MODAL') {
+      if (e.data.command === "OPEN_MODAL") {
         openModal();
-      } else if (e.data.command === 'CLOSE_MODAL') {
+      } else if (e.data.command === "CLOSE_MODAL") {
         closeModal();
       }
     });
   }, []);
 
-  useEffect(() => {
-    axios
-      .post(
-        `${'https://mock-casino.demo.rewindprotocol.com/'}get-iframe-url`,
-        {
-          foreignId,
-        },
-        {
-          headers: {
-            "content-type": "application/json",
+  useEffectSkipFirst(() => {
+    if (foreignId) {
+      axios
+        .post(
+          `${"https://mock-casino.demo.rewindprotocol.com/"}get-iframe-url`,
+          {
+            foreignId,
           },
-        }
-      )
-      .then((res) => {
-        const stringArr = res.data.split("=");
-        const sid = stringArr[stringArr.length - 1];
-        setSid(sid);
+          {
+            headers: {
+              "content-type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          const stringArr = res.data.split("=");
+          const sid = stringArr[stringArr.length - 1];
+          setSid(sid);
 
-        const desktopModalIframe = document.getElementById(
-          "rewind-iframe-modal"
-        );
-        if (desktopModalIframe) {
-          //@ts-ignore
-          desktopModalIframe.src = `${'https://casino.demo.rewindprotocol.com'}/app/modal/bonus-list?isModal=true&sid=${sid}`;
-        }
-      })
-      .catch((err) => err?.response);
-  }, []);
+          const desktopModalIframe = document.getElementById(
+            "rewind-iframe-modal"
+          );
+          if (desktopModalIframe) {
+            //@ts-ignore
+            desktopModalIframe.src = `${"https://casino.demo.rewindprotocol.com"}/app/modal/bonus-list?isModal=true&sid=${sid}`;
+          }
+        })
+        .catch((err) => err?.response);
+    }
+  }, [foreignId]);
 
   return (
     <>
@@ -102,7 +120,9 @@ const DemoCasino = () => {
                 : "rewind-iframe"
             }
             frameBorder="0"
-            src={`${'https://casino.demo.rewindprotocol.com'}/app/iframe?theme=${'BLUE_DARK'}&isMobile=${isMobile}&windowSizeWidth=${windowSize.width}&isMobileResponsive=${isMobileResponsive}&sid=${sid}&foreignId=${foreignId}`}
+            src={`${"https://casino.demo.rewindprotocol.com"}/app/iframe?theme=${"BLUE_DARK"}&isMobile=${isMobile}&windowSizeWidth=${
+              windowSize.width
+            }&isMobileResponsive=${isMobileResponsive}&sid=${sid}&foreignId=${foreignId}`}
           ></iframe>
           <div className="content__right__bottom"></div>
         </div>
