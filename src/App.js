@@ -103,6 +103,7 @@ const DemoCasino = () => {
     }
   }, [foreignId]);
 
+  
   return (
     <>
       <header></header>
