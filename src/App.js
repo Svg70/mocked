@@ -15,8 +15,6 @@ const DemoCasino = () => {
   useEffect(() => {
     const foreignIdCookie = Cookies.get("foreignId");
 
-    console.log(foreignIdCookie, "COOKIE");
-
     if (!foreignIdCookie) {
       const mockedForeignId = "mocked-casino-" + Math.random() * 10 ** 8;
       Cookies.set("foreignId", mockedForeignId);
@@ -27,6 +25,7 @@ const DemoCasino = () => {
   }, []);
 
   useEffect(() => {
+    setIsMobileResponsive(false);
     // Get the modal
     var modal = document.getElementById("myModal");
     // Get the <span> element that closes the modal
@@ -53,14 +52,13 @@ const DemoCasino = () => {
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
-      if (event.target == modal) {
+      if (event.target === modal) {
         //@ts-ignore
         modal.style.display = "none";
       }
     };
 
     window.addEventListener("message", (e) => {
-      console.log(e, "POST_MESSAGE");
       if (e.origin !== "https://casino.demo.rewindprotocol.com") {
         return;
       }
@@ -103,7 +101,7 @@ const DemoCasino = () => {
     }
   }, [foreignId]);
 
-  
+
   return (
     <>
       <header></header>
@@ -155,6 +153,7 @@ const DemoCasino = () => {
               </svg>
             </span>
             <iframe
+              title="rewind-iframe-modal-2"
               id="rewind-iframe-modal"
               frameBorder="0"
               width="100%"

@@ -9,5 +9,6 @@ export const useEffectSkipFirst = (callback, dependencies) => {
             return;
         }
         wasChanged.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, dependencies);
 };
