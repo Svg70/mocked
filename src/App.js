@@ -59,6 +59,7 @@ const DemoCasino = () => {
     };
 
     window.addEventListener("message", (e) => {
+      // if (e.origin !== "http://localhost:3006") {
       if (e.origin !== "https://casino.demo.rewindprotocol.com") {
         return;
       }
@@ -101,6 +102,13 @@ const DemoCasino = () => {
     }
   }, [foreignId]);
 
+  const [value, setValue] = useState("");
+
+  const setForeignIdCoookie = () => {
+    Cookies.set("foreignId", value);
+    setForeignId(value)
+  }
+
 
   return (
     <>
@@ -109,7 +117,13 @@ const DemoCasino = () => {
         <nav></nav>
         <div className="content__central"></div>
         <div className={"content__right"}>
-          <div className="content__right__top"></div>
+          <div className="content__right__top">
+            <div className="content__right__top-input-wrapper">
+              <label>Enter foreignId</label>
+              <input value={value || foreignId} onChange={e => setValue(e.target.value)} type="text" />
+              <button onClick={setForeignIdCoookie}>Submit!</button>
+            </div>
+          </div>
           <iframe
             ref={iFrameRef}
             title="Child iframe"
