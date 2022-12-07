@@ -59,8 +59,8 @@ const DemoCasino = () => {
     };
 
     window.addEventListener("message", (e) => {
-      // if (e.origin !== "http://localhost:3006") {
-      if (e.origin !== "https://casino.demo.rewindprotocol.com") {
+      if (e.origin !== process.env.REACT_APP_IFRAME) {
+      // if (e.origin !== "https://casino.demo.rewindprotocol.com") {
         return;
       }
       if (e.data.command === "OPEN_MODAL") {
@@ -75,7 +75,7 @@ const DemoCasino = () => {
     if (foreignId) {
       axios
         .post(
-          `${"https://mock-casino.demo.rewindprotocol.com/"}get-iframe-url`,
+          `${process.env.REACT_APP_MOCKED_CASINO}get-iframe-url`,
           {
             foreignId,
           },
@@ -95,7 +95,7 @@ const DemoCasino = () => {
           );
           if (desktopModalIframe) {
             //@ts-ignore
-            desktopModalIframe.src = `${"https://casino.demo.rewindprotocol.com"}/app/modal/bonus-list?isModal=true&sid=${sid}`;
+            desktopModalIframe.src = `${process.env.REACT_APP_IFRAME}/app/modal/bonus-list?isModal=true&sid=${sid}`;
           }
         })
         .catch((err) => err?.response);
@@ -133,7 +133,7 @@ const DemoCasino = () => {
                 : "rewind-iframe"
             }
             frameBorder="0"
-            src={`${"https://casino.demo.rewindprotocol.com"}/app/iframe?theme=${"BLUE_DARK"}&isMobile=${isMobile}&windowSizeWidth=${
+            src={`${process.env.REACT_APP_IFRAME}/app/iframe?theme=${"BLUE_DARK"}&isMobile=${isMobile}&windowSizeWidth=${
               windowSize.width
             }&isMobileResponsive=${isMobileResponsive}&sid=${sid}&foreignId=${foreignId}`}
           ></iframe>
@@ -171,7 +171,7 @@ const DemoCasino = () => {
               id="rewind-iframe-modal"
               frameBorder="0"
               width="100%"
-              src="https://casino.demo.rewindprotocol.com/app/modal/bonus-list?isModal=true"
+              src={`${process.env.REACT_APP_IFRAME}/app/modal/bonus-list?isModal=true`}
             ></iframe>
           </div>
         </div>
