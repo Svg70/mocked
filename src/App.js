@@ -109,6 +109,9 @@ const DemoCasino = () => {
     setForeignId(value)
   }
 
+  useEffect(() => {
+    setValue(foreignId)
+  }, [foreignId]);
 
   return (
     <>
@@ -120,8 +123,8 @@ const DemoCasino = () => {
           <div className="content__right__top">
             <div className="content__right__top-input-wrapper">
               <label>Enter foreignId</label>
-              <input value={value || foreignId} onChange={e => setValue(e.target.value)} type="text" />
-              <button onClick={setForeignIdCoookie}>Submit!</button>
+              <input value={value} onChange={e => setValue(e.target.value)} type="text" />
+              <button onClick={setForeignIdCoookie} disabled={!value}>Submit!</button>
             </div>
           </div>
           <iframe
