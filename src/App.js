@@ -136,7 +136,7 @@ const DemoCasino = () => {
                 : "rewind-iframe"
             }
             frameBorder="0"
-            src={`${process.env.REACT_APP_IFRAME}/app/iframe?theme=${"BLUE_DARK"}&isMobile=${isMobile}&windowSizeWidth=${
+            src={`${process.env.REACT_APP_IFRAME}/app/iframe?theme=${"BLUE_DARK"}&isMobile=${true}&windowSizeWidth=${
               windowSize.width
             }&isMobileResponsive=${isMobileResponsive}&sid=${sid}&foreignId=${foreignId}`}
           ></iframe>
