@@ -111,8 +111,9 @@ nav {
 
 #rewind-iframe {
   /* width: 100%; */
-  width: 265px;
-  height: 361px;
+  width: 400px;
+  height: 574px;
+  border-radius: 8px;
   /* height: 220px; */
   margin: 0 0 10px 15px;
 }

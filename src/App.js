@@ -8,7 +8,7 @@ const DemoCasino = () => {
   const iFrameRef = useRef(null);
   const [isMobileResponsive, setIsMobileResponsive] = useState(false);
   const [sid, setSid] = useState("");
-  const { breakpoint, windowSize } = useBreakpoint();
+  const { breakpoint } = useBreakpoint();
   const isMobile = useMemo(() => breakpoint === "xs", [breakpoint]);
   const [foreignId, setForeignId] = useState();
 
@@ -118,16 +118,8 @@ const DemoCasino = () => {
       <header></header>
       <div className="content">
         <nav></nav>
-        <div className="content__central"></div>
-        <div className={"content__right"}>
-          <div className="content__right__top">
-            <div className="content__right__top-input-wrapper">
-              <label>Enter foreignId</label>
-              <input value={value} onChange={e => setValue(e.target.value)} type="text" />
-              <button onClick={setForeignIdCoookie} disabled={!value}>Submit!</button>
-            </div>
-          </div>
-          <iframe
+        <div className="content__central">
+        <iframe
             ref={iFrameRef}
             title="Child iframe"
             id={
@@ -136,10 +128,17 @@ const DemoCasino = () => {
                 : "rewind-iframe"
             }
             frameBorder="0"
-            src={`${process.env.REACT_APP_IFRAME}/app/iframe?theme=${"BLUE_DARK"}&isMobile=${true}&windowSizeWidth=${
-              windowSize.width
-            }&isMobileResponsive=${isMobileResponsive}&sid=${sid}&foreignId=${foreignId}`}
+            src={`${process.env.REACT_APP_IFRAME}?sid=${sid}&foreignId=${foreignId}`}
           ></iframe>
+        </div>
+        <div className={"content__right"}>
+          <div className="content__right__top">
+            <div className="content__right__top-input-wrapper">
+              <label>Enter foreignId</label>
+              <input value={value} onChange={e => setValue(e.target.value)} type="text" />
+              <button onClick={setForeignIdCoookie} disabled={!value}>Submit!</button>
+            </div>
+          </div>
           <div className="content__right__bottom"></div>
         </div>
       </div>
